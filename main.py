@@ -1,16 +1,23 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+import tkinter as tk
+from tkinter import *
+from tkinter import ttk
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+class Watch_Builder_GUI:
+    def __init__(self, master):
+        self.master = master
+        master.title('Watch Builder')
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+        self.tab_control = ttk.Notebook(root)
+        self.tab_watches = ttk.Frame(self.tab_control)
+        self.tab_tables = ttk.Frame(self.tab_control)
+        self.tab_control.add(self.tab_watches, text='Watch')
+        self.tab_control.add(self.tab_tables, text='Tables')
+        self.tab_control.pack(expand=1, fill='both')
+        Label(self.tab_watches, text='This is where each watch will be calculated').grid(column=0, row=0, padx=30, pady=30)
+        Label(self.tab_tables, text='This is where tables will be inputted and edited').grid(column=0, row=0, padx=30, pady=30)
+
+
+root = Tk()
+watch_builder_gui = Watch_Builder_GUI(root)
+root.mainloop()
