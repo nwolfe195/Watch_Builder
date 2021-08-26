@@ -1,6 +1,6 @@
-Name,Description,CR,Foraging,Navigation
-"The Shrieking Moors","This region is blanketed in seemingly endless fields of grey-yellow grass, the wind echoing a woman’s scream.",3,12,12
-"The Black Forests","This region is dark and gloomy, the sun greyed out by the canopy above.",5,10,12
-"The Silver Cliffs","This region is dominated by sheer cliffs of white stone.",7,15,15
-"The Burning Plains","This region burns with a fiery heat, despite the sun blotted out by the ash of spewing volcano.  A gleaming city and a stone pyramid can both be seen in the distance.",11,22,10
-"Ruins of the Tyranny","The ruined glory of the Tyranny’s capital seem to stretch endlessly, lit by the sickly green glow of arcane technology.",15,8,15
+Name,Description,CR,Foraging,Navigation,Chance
+"The Shrieking Moors","This region is blanketed in seemingly endless fields of grey-yellow grass, the wind echoing a woman’s scream.",3,12,12,10
+"The Black Forests","This region is dark and gloomy, the sun greyed out by the canopy above.",5,10,12,20
+"The Silver Cliffs","This region is dominated by sheer cliffs of white stone.",7,15,15,10
+"The Burning Plains","This region burns with a fiery heat, despite the sun blotted out by the ash of spewing volcano.  A gleaming city and a stone pyramid can both be seen in the distance.",11,22,10,20
+"Ruins of the Tyranny","The ruined glory of the Tyranny’s capital seem to stretch endlessly, lit by the sickly green glow of arcane technology.",15,8,15,20
