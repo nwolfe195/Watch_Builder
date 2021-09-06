@@ -2,6 +2,8 @@ from tkinter import *
 from tkinter.messagebox import showinfo
 import pandas as pd
 import random
+import re
+from random import randint
 
 
 class Watch_Builder_GUI:
@@ -24,7 +26,7 @@ class Watch_Builder_GUI:
         encounter_file = 'encounters.csv'
         self.encounters_df = pd.read_csv(encounter_file)
         self.encounter_variable = StringVar()
-        self.encounter_variable.set('100')
+        self.encounter_variable.set('50')
 
         self.encounter_text = StringVar()
         self.rain_text = StringVar()
@@ -64,23 +66,56 @@ class Watch_Builder_GUI:
         if self.description_text.get() == 'Select a region':
             showinfo('Error', 'Select a region first!')
             return
-        print('wee')
+        self.encounter_check()
 
     def sleep_watch(self):
         if self.description_text.get() == 'Select a region':
             showinfo('Error', 'Select a region first!')
             return
-        print('wee')
+        self.encounter_check()
 
     def encounter_check(self):
         encounter_chance = (int(self.encounter_chance_text.get()) + int(self.encounter_variable.get())) / 100
         roll = random.random()
         if roll < encounter_chance:
-            print(self.region_variable.get())
             encounters = self.encounters_df.loc[self.encounters_df['Region'] == self.region_variable.get()]
-            print(encounters)
+            encounter_name = encounters['Encounter'].tolist()
+            encounter_weight = encounters['Chance'].tolist()
+            encounter = random.choices(encounter_name, weights=encounter_weight, k=1)[0]
+            self.encounter_text.set(self.roll_encounter(encounter))
         else:
             self.encounter_text.set('No encounter')
+
+    def roll_encounter(self, encounter):
+        regex = '\d+d\d+((\+|\-)\d+)?'
+        split_encounter = encounter.split(', ')
+        joined_encounter = []
+        for split in split_encounter:
+            roll = re.match(regex, split).group(0)
+            rolled_role = self.roll_dice(roll)
+            rolled_split = re.sub(regex, rolled_role, split)
+            joined_encounter.append(rolled_split)
+        joined_encounter_string = ', '.join(joined_encounter)
+        return joined_encounter_string
+
+    def roll_dice(self, roll):
+        number_match = re.findall('\d+', roll)
+        dice = int(number_match[0])
+        sides = int(number_match[1])
+        total = 0
+        for x in range(dice):
+            result = randint(1, sides)
+            total += result
+        if re.search('(\+|\-)', roll) is not None:
+            mod = int(re.search('\d+$', roll).group(0))
+            if re.search('(\+|\-)', roll).group(0) == '+':
+                total += mod
+            else:
+                total -= mod
+        if total < 1:
+            return str(0)
+        else:
+            return str(total)
 
     def select_region(self, selected):
         region_data = self.regions_df.loc[self.regions_df['Name'] == selected]
