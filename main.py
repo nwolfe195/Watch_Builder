@@ -26,11 +26,19 @@ class Watch_Builder_GUI:
         encounter_file = 'encounters.csv'
         self.encounters_df = pd.read_csv(encounter_file)
         self.encounter_variable = StringVar()
-        self.encounter_variable.set('50')
+        self.encounter_variable.set('10')
+
+        rain_file = 'rain.csv'
+        self.rain_df = pd.read_csv(rain_file)
+
+        wind_file = 'wind.csv'
+        self.wind_df = pd.read_csv(wind_file)
 
         self.encounter_text = StringVar()
         self.rain_text = StringVar()
+        self.rain_text.set('Clear Skies')
         self.wind_text = StringVar()
+        self.wind_text.set('No Wind')
 
         self.set_components()
 
@@ -45,7 +53,7 @@ class Watch_Builder_GUI:
         Label(text='Navigation DC',).grid(row=2, column=4)
         Label(textvariable=self.navigation_text).grid(row=2, column=5)
 
-        Label(text='Encounter').grid(row=3, column=0)
+        Label(text='Encounter Chance').grid(row=3, column=0)
         encounter_modifiers = [-20, -10, 0, 10, 20, 30, 40, 50]
         OptionMenu(self.master, self.encounter_variable, *encounter_modifiers).grid(row=3, column=1)
 
@@ -55,24 +63,43 @@ class Watch_Builder_GUI:
 
         Label(text='Encounter').grid(row=5, column=0)
         Label(textvariable=self.encounter_text).grid(row=5, column=1)
+        Label(text='Rain').grid(row=6, column=0)
+        Label(textvariable=self.rain_text).grid(row=6, column=1)
+        Label(text='Wind').grid(row=7, column=0)
+        Label(textvariable=self.wind_text).grid(row=7, column=1)
 
     def travel_watch(self):
         if self.description_text.get() == 'Select a region':
             showinfo('Error', 'Select a region first!')
             return
-        self.encounter_check()
+        self.all_watchs()
 
     def activity_watch(self):
         if self.description_text.get() == 'Select a region':
             showinfo('Error', 'Select a region first!')
             return
-        self.encounter_check()
+        self.all_watchs()
 
     def sleep_watch(self):
         if self.description_text.get() == 'Select a region':
             showinfo('Error', 'Select a region first!')
             return
+        self.all_watchs()
+
+    def all_watchs(self):
         self.encounter_check()
+        self.weather_check()
+
+    def weather_check(self):
+        rain_weight = self.rain_df.loc[self.rain_df['Current Rain'] == self.rain_text.get()].values.flatten().tolist()[1:]
+        rain_types = list(self.rain_df)[1:]
+        new_rain = random.choices(rain_types, weights=rain_weight, k=1)[0]
+        self.rain_text.set(new_rain)
+
+        wind_weight = self.wind_df.loc[self.wind_df['Current Wind'] == self.wind_text.get()].values.flatten().tolist()[1:]
+        wind_types = list(self.wind_df)[1:]
+        new_wind = random.choices(wind_types, weights=wind_weight, k=1)[0]
+        self.wind_text.set(new_wind)
 
     def encounter_check(self):
         encounter_chance = (int(self.encounter_chance_text.get()) + int(self.encounter_variable.get())) / 100
