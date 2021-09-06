@@ -35,6 +35,7 @@ class Watch_Builder_GUI:
         self.wind_df = pd.read_csv(wind_file)
 
         self.encounter_text = StringVar()
+        self.encounter_text.set('No Roll Yet')
         self.rain_text = StringVar()
         self.rain_text.set('Clear Skies')
         self.wind_text = StringVar()
